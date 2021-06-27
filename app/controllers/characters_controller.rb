@@ -43,12 +43,12 @@ class CharactersController < ApplicationController
 
   def search_by_name
     character = Character.character_by_name(params[:name], params[:ts], params[:hash])
-    render json: CharacterSerializer.new(character)
+    render json: character
   end
 
   def search_by_id
     character = Character.character_by_id(params[:id], params[:ts], params[:hash])
-    render json: CharacterSerializer.new(character)
+    render json: character
   end
 
   private
@@ -61,5 +61,4 @@ class CharactersController < ApplicationController
     def character_params
       params.require(:character).permit(:name, :description, :thumbnail, :urls, :comics, :events, :series, :user_id)
     end
-  end
 end
