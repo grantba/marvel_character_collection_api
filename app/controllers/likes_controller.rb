@@ -3,39 +3,42 @@ class LikesController < ApplicationController
 
   # GET /likes
   def index
-    @likes = Like.all
-
-    render json: @likes
+    likes = Like.all
+    render json: LikeSerializer.new(likes)
   end
 
   # GET /likes/1
   def show
-    render json: @like
+    render json: LikeSerializer.new(@like)
   end
 
   # POST /likes
   def create
-    @like = Like.new(like_params)
-
-    if @like.save
-      render json: @like, status: :created, location: @like
+    like = Like.new(like_params)
+    if like.save
+      render json: LikeSerializer.new(like), status: :created, location: like
     else
-      render json: @like.errors, status: :unprocessable_entity
+      render json: LikeSerializer.new(like).errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /likes/1
   def update
     if @like.update(like_params)
-      render json: @like
+      render json: LikeSerializer.new(@like)
     else
-      render json: @like.errors, status: :unprocessable_entity
+      render json: LikeSerializer.new(@like).errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /likes/1
   def destroy
-    @like.destroy
+    if @like
+      @like.destroy
+      render json: LikeSerializer.new(@like)
+    else
+      render json: LikeSerializer.new(@like).errors, status: :unprocessable_entity
+    end   
   end
 
   private
@@ -48,4 +51,5 @@ class LikesController < ApplicationController
     def like_params
       params.require(:like).permit(:like, :user_id, :character_id)
     end
+  end
 end
