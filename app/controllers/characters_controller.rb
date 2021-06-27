@@ -3,39 +3,52 @@ class CharactersController < ApplicationController
 
   # GET /characters
   def index
-    @characters = Character.all
-
-    render json: @characters
+    characters = Character.all
+    render json: CharacterSerializer.new(characters)
   end
 
   # GET /characters/1
   def show
-    render json: @character
+    render json: CharacterSerializer.new(@character)
   end
 
   # POST /characters
   def create
-    @character = Character.new(character_params)
-
-    if @character.save
-      render json: @character, status: :created, location: @character
+    character = Character.new(character_params)
+    if character.save
+      render json: CharacterSerializer.new(character), status: :created, location: character
     else
-      render json: @character.errors, status: :unprocessable_entity
+      render json: CharacterSerializer.new(character).errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /characters/1
   def update
     if @character.update(character_params)
-      render json: @character
+      render json: CharacterSerializer.new(@character)
     else
-      render json: @character.errors, status: :unprocessable_entity
+      render json: CharacterSerializer.new(@character).errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /characters/1
   def destroy
-    @character.destroy
+    if @character
+      @character.destroy
+      render json: CharacterSerializer.new(@character)
+    else
+      render json: CharacterSerializer.new(@character).errors, status: :unprocessable_entity
+    end  
+  end
+
+  def search_by_name
+    character = Character.character_by_name(params[:name], params[:ts], params[:hash])
+    render json: CharacterSerializer.new(character)
+  end
+
+  def search_by_id
+    character = Character.character_by_id(params[:id], params[:ts], params[:hash])
+    render json: CharacterSerializer.new(character)
   end
 
   private
@@ -48,4 +61,5 @@ class CharactersController < ApplicationController
     def character_params
       params.require(:character).permit(:name, :description, :thumbnail, :urls, :comics, :events, :series, :user_id)
     end
+  end
 end
