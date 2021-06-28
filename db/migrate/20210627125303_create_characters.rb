@@ -8,7 +8,7 @@ class CreateCharacters < ActiveRecord::Migration[6.1]
       t.string :comics
       t.string :events
       t.string :series
-      t.belongs_to :user, null: false, foreign_key: true
+      t.belongs_to :user, null: true, foreign_key: true
 
       t.timestamps
     end

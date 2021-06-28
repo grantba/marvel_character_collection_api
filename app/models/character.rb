@@ -1,7 +1,7 @@
 class Character < ApplicationRecord
   belongs_to :user
-  has_many :comments
-  has_many :likes
+  has_many :comments, dependent: :destroy
+  has_many :likes, dependent: :destroy
 
   def self.character_by_name(name, ts, hash)
     response = RestClient.get("http://gateway.marvel.com/v1/public/characters?nameStartsWith=#{name}&ts=#{ts}&apikey=#{ENV["PUBLIC_KEY"]}&hash=#{hash}")

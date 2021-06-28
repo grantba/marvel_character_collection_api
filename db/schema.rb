@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2021_06_27_130001) do
     t.string "comics"
     t.string "events"
     t.string "series"
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_characters_on_user_id"
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(version: 2021_06_27_130001) do
 
   create_table "comments", force: :cascade do |t|
     t.text "description"
-    t.integer "user_id", null: false
-    t.integer "character_id", null: false
+    t.integer "user_id"
+    t.integer "character_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["character_id"], name: "index_comments_on_character_id"
@@ -38,8 +38,8 @@ ActiveRecord::Schema.define(version: 2021_06_27_130001) do
 
   create_table "likes", force: :cascade do |t|
     t.boolean "like_status"
-    t.integer "user_id", null: false
-    t.integer "character_id", null: false
+    t.integer "user_id"
+    t.integer "character_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["character_id"], name: "index_likes_on_character_id"
