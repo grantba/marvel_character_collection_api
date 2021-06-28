@@ -12,4 +12,10 @@ class Character < ApplicationRecord
     response = RestClient.get("http://gateway.marvel.com/v1/public/characters/#{id}?&ts=#{ts}&apikey=#{ENV["PUBLIC_KEY"]}&hash=#{hash}")
     character_response = JSON.parse(response)
   end
+
+  def self.findLikes(params)
+    c = Character.find_by_id(params[:character_id])
+    like = c.likes.where(user_id: params[:user_id])
+    return like
+  end
 end

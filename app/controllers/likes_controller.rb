@@ -1,5 +1,5 @@
 class LikesController < ApplicationController
-  before_action :set_like, only: [:show, :update, :destroy]
+  before_action :set_like, only: [:show, :destroy]
 
   # GET /likes
   def index
@@ -24,10 +24,17 @@ class LikesController < ApplicationController
 
   # PATCH/PUT /likes/1
   def update
-    if @like.update(like_params)
-      render json: LikeSerializer.new(@like)
+    like = Character.findLikes(params);
+    if !like.blank?
+      like.update(like_params)
+      render json: LikeSerializer.new(like)
     else
-      render json: LikeSerializer.new(@like).errors, status: :unprocessable_entity
+      like = Like.new(like_params)
+      if like.save
+        render json: LikeSerializer.new(like)
+      else
+        render json: LikeSerializer.new(like).errors, status: :unprocessable_entity
+      end
     end
   end
 
