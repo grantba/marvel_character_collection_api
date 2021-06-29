@@ -33,11 +33,10 @@ class CommentsController < ApplicationController
 
   # DELETE /comments/1
   def destroy
-    if @comment
-      @comment.destroy
-      render json: CommentSerializer.new(@comment)
+    if @comment.destroy
+      render json: {status: :ok}
     else
-      render json: CommentSerializer.new(@comment).errors, status: :unprocessable_entity
+      render json: {status: :unprocessable_entity}
     end   
   end
 

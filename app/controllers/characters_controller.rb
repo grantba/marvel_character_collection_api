@@ -33,11 +33,10 @@ class CharactersController < ApplicationController
 
   # DELETE /characters/1
   def destroy
-    if @character
-      @character.destroy
-      render json: CharacterSerializer.new(@character)
+    if @character.destroy
+      render json: {status: :ok}
     else
-      render json: CharacterSerializer.new(@character).errors, status: :unprocessable_entity
+      render json: {status: :unprocessable_entity}
     end  
   end
 

@@ -40,12 +40,11 @@ class LikesController < ApplicationController
 
   # DELETE /likes/1
   def destroy
-    if @like
-      @like.destroy
-      render json: LikeSerializer.new(@like)
+    if @like.destroy
+      render json: {status: :ok}
     else
-      render json: LikeSerializer.new(@like).errors, status: :unprocessable_entity
-    end   
+      render json: {status: :unprocessable_entity}
+    end  
   end
 
   private

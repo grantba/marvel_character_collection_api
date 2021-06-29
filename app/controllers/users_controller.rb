@@ -33,11 +33,10 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    if @user
-      @user.destroy
-      render json: UserSerializer.new(@user)
+    if @user.destroy
+      render json: {status: :ok}
     else
-      render json: UserSerializer.new(@user).errors, status: :unprocessable_entity
+      render json: {status: :unprocessable_entity}
     end    
   end
 
