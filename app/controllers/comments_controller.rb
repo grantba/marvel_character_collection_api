@@ -1,15 +1,10 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :update, :destroy]
+  before_action :set_comment, only: [:update, :destroy]
 
   # GET /comments
   def index
     comments = Comment.all
     render json: CommentSerializer.new(comments)
-  end
-
-  # GET /comments/1
-  def show
-    render json: CommentSerializer.new(@comment)
   end
 
   # POST /comments

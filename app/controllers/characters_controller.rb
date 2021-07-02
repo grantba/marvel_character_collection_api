@@ -1,5 +1,5 @@
 class CharactersController < ApplicationController
-  before_action :set_character, only: [:show, :update, :destroy]
+  before_action :set_character, only: [:show, :destroy]
 
   # GET /characters
   def index
@@ -19,15 +19,6 @@ class CharactersController < ApplicationController
       render json: CharacterSerializer.new(character), status: :created, location: character
     else
       render json: CharacterSerializer.new(character).errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /characters/1
-  def update
-    if @character.update(character_params)
-      render json: CharacterSerializer.new(@character)
-    else
-      render json: CharacterSerializer.new(@character).errors, status: :unprocessable_entity
     end
   end
 
