@@ -1,16 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
-
-  # GET /users
-  def index
-    users = User.all
-    render json: UserSerializer.new(users)
-  end
-
-  # GET /users/1
-  def show
-    render json: UserSerializer.new(@user)
-  end
+  before_action :set_user, only: [:update, :destroy]
 
   # POST /users
   def create
@@ -45,6 +34,11 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
+    end
+
+    # GET /users/1
+    def show
+      render json: UserSerializer.new(@user)
     end
 
     # Only allow a list of trusted parameters through.

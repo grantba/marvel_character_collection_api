@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   post '/search_by_id', to: 'characters#search_by_id'
   resources :characters, only: [:index, :show, :create, :destroy]
 
-  resources :users
+  resources :users, only: [:show, :create, :update, :destroy]
 
   resources :comments, only: [:index, :create, :update, :destroy]
   
