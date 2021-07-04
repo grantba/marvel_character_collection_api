@@ -17,7 +17,7 @@ class LikesController < ApplicationController
       if like.save
         render json: LikeSerializer.new(like)
       else
-        render json: LikeSerializer.new(like).errors, status: :unprocessable_entity
+        render json: {status: :unprocessable_entity}
       end
     end
   end

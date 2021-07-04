@@ -3,12 +3,18 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    binding.pry
-    user = User.new(user_params)
-    if user.save
-      render json: UserSerializer.new(user), status: :created, location: user
+    user_info = User.find_by(username: params[:username], email: params[:email])
+    if user_info.blank?
+      user = User.new(user_params)
+      if user.save
+        render json: UserSerializer.new(user)
+      else
+        render json: {status: :unprocessable_entity}
+      end
+    elsif User.exists?(user_info.id)
+      render json: UserSerializer.new(user_info)
     else
-      render json: UserSerializer.new(user).errors, status: :unprocessable_entity
+      render json: {status: :unprocessable_entity}
     end
   end
 
@@ -17,7 +23,7 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       render json: UserSerializer.new(@user)
     else
-      render json: UserSerializer.new(@user).errors, status: :unprocessable_entity
+      render json: {status: :unprocessable_entity}
     end
   end
 
@@ -34,11 +40,6 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
-    end
-
-    # GET /users/1
-    def show
-      render json: UserSerializer.new(@user)
     end
 
     # Only allow a list of trusted parameters through.

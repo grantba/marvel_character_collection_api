@@ -16,9 +16,9 @@ class CharactersController < ApplicationController
   def create
     character = Character.new(character_params)
     if character.save
-      render json: CharacterSerializer.new(character), status: :created, location: character
+      render json: CharacterSerializer.new(character)
     else
-      render json: CharacterSerializer.new(character).errors, status: :unprocessable_entity
+      render json: {status: :unprocessable_entity}
     end
   end
 
