@@ -4,7 +4,15 @@ class CommentsController < ApplicationController
   # GET /comments
   def index
     comments = Comment.all
-    render json: CommentSerializer.new(comments)
+    render json: comments.to_json(
+      :include => {
+        :character => {
+        only: [:id, :name, :description, :thumbnail, :urls, :comics, :events, :series]
+        }, 
+        :user => {
+        only: [:id, :username]
+      }
+    })
   end
 
   # POST /comments
