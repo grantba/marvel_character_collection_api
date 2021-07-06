@@ -32,12 +32,12 @@ class CharactersController < ApplicationController
   end
 
   def search_by_name
-    character = Character.character_by_name(params[:name], params[:ts], params[:hash])
+    character = Character.character_by_name(params[:name], params[:ts])
     render json: character
   end
 
   def search_by_id
-    character = Character.character_by_id(params[:id], params[:ts], params[:hash])
+    character = Character.character_by_id(params[:id], params[:ts])
     render json: character
   end
 
