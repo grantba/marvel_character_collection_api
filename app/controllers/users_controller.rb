@@ -1,25 +1,29 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
-
-  # GET /users/1
-  def show
-    render json: UserSerializer.new(@user)
-  end
+  before_action :set_user, only: [:update, :destroy]
 
   # POST /users
   def create
-    user_info = User.find_by(username: params[:username], email: params[:email])
-    if user_info.blank?
+    if params["button"] === "SignUp"
       user = User.new(user_params)
       if user.save
         render json: UserSerializer.new(user)
       else
         render json: {status: :unprocessable_entity}
       end
-    elsif User.exists?(user_info.id)
-      render json: UserSerializer.new(user_info)
+    elsif params["button"] === "edit-my-info"
+      user_info = User.find_by(username: params[:username], email: params[:email])
+      if User.exists?(user_info.id)
+        render json: UserSerializer.new(user_info)
+      else
+        render json: {status: :unprocessable_entity}
+      end
     else
-      render json: {status: :unprocessable_entity}
+      user_info = User.find_by(username: params[:username])
+      if user_info && user_info.authenticate(params[:password])
+        render json: UserSerializer.new(user_info)
+      else
+        render json: {status: :unprocessable_entity}
+      end
     end
   end
 
@@ -49,6 +53,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:username, :email, :bio, :image)
+      params.require(:user).permit(:username, :password, :email, :bio, :image)
     end
 end
