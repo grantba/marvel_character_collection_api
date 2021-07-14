@@ -10,9 +10,8 @@ class UsersController < ApplicationController
       if user.save
         render json: UserSerializer.new(user)
       else
-        render json: {status: :unprocessable_entity}
-        # errors = user.errors.map {|message| message.message}.join(", ")
-        # render json: { message: '#{errors}' }
+        errors = user.errors.map {|message| message.message}.join(", ")
+        render json: {errors: "#{errors}"}, status: :unprocessable_entity
       end
     # finds user, if exists, and returns information for update form
     elsif params["button"] === "edit-my-info"
@@ -28,8 +27,7 @@ class UsersController < ApplicationController
       if user_info && user_info.authenticate(params[:password])
         render json: UserSerializer.new(user_info)
       else
-        render json: {status: :unprocessable_entity}
-        # render json: { message: "We could not verify your credentials. Try logging in again. If you do not have an account already, please sign up instead." }
+        render json: {errors: "We could not verify your credentials. Try logging in again.\n\nIf you do not have an account already, please sign up instead."}
       end
     end
   end
